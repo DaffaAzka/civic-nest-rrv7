@@ -84,6 +84,12 @@ model Rw {
   regencyCode    String
   districtCode   String
   villageCode    String
+
+  provinceName   String
+  regencyName    String
+  districtName   String
+  villageName    String
+
   rt             Rt[]
 
   @@unique([number, villageCode])

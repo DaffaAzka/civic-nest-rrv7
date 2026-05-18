@@ -118,7 +118,7 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
             items={lists.regencies}
             name="regency"
             text={isLoading ? "Loading..." : "Select Regency"}
-            onChange={(value: string) => {
+            onChange={(value: string, name: string) => {
               setValues((prev) => ({
                 ...prev,
                 regency: value,

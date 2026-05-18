@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -23,7 +24,7 @@ export default function SelectField({
 }: {
   name: string;
   text: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, name: string) => void;
   items: SelectItems[];
   error?: string | null;
   value?: string | null;
@@ -32,6 +33,12 @@ export default function SelectField({
   isDisabled?: boolean;
   withAll?: boolean;
 }) {
+  const [search, setSearch] = useState("");
+
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
     <Field
       data-invalid={error ? true : undefined}
@@ -40,7 +47,17 @@ export default function SelectField({
         <FieldLabel htmlFor={`input-field-${name}`}>{label}</FieldLabel>
       : <></>}
       <div className="flex flex-col gap-1">
-        <Select onValueChange={onChange} name={name} value={value ?? ""}>
+        <Select
+          onValueChange={(value) => {
+            const name =
+              items.find((item) => item.id.toString() === value)?.name ?? "";
+            onChange(value, name);
+          }}
+          onOpenChange={(open) => {
+            if (!open) setSearch("");
+          }}
+          name={name}
+          value={value ?? ""}>
           <SelectTrigger className="w-full" disabled={isDisabled}>
             <SelectValue placeholder={text} />
           </SelectTrigger>
@@ -51,11 +68,15 @@ export default function SelectField({
             <InputField
               name="search"
               placeholder="Search"
-              onChange={() => {}}
+              type="text"
+              value={search}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearch(e.target.value);
+              }}
             />
             <ScrollArea className="h-full">
               {withAll && <SelectItem value="all">All</SelectItem>}
-              {items.map((item) => (
+              {filteredItems.map((item) => (
                 <SelectItem key={item.id} value={item.id.toString()}>
                   {item.name}
                 </SelectItem>

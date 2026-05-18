@@ -1,13 +1,13 @@
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import type { HTMLInputTypeAttribute } from "react";
+import type { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
 
 export default function InputField({
   name,
   type = "text",
   label,
   placeholder,
-  description,
+  value,
   error,
   onChange,
 }: {
@@ -15,9 +15,10 @@ export default function InputField({
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
   label?: string;
+  value?: string;
   description?: string;
   error?: string;
-  onChange?: () => void;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
     <Field data-invalid={error ? true : undefined}>
@@ -28,6 +29,7 @@ export default function InputField({
         id={`input-field-${name}`}
         type={type}
         name={name}
+        value={value}
         placeholder={placeholder}
         onChange={onChange}
       />
