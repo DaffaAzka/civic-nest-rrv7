@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field, FieldDescription, FieldLabel } from "../ui/field";
-import type { SelectItem as SelectItems } from "@/types/other.types";
+import type { SelectItem as SelectItems } from "@/types/index.types";
 import { ScrollArea } from "../ui/scroll-area";
 import InputField from "./input-field";
 

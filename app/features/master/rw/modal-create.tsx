@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { Province, Regency, Village } from "@/types/map.types";
-import type { SelectItem } from "@/types/other.types";
+import type { SelectItem } from "@/types/index.types";
 import { useEffect, useState } from "react";
 import InputField from "@/components/custom/input-field";
 import LoadingButton from "@/components/custom/loading-button";
@@ -29,25 +29,25 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
   const isLoading = fetcher.state === "loading";
 
   const [values, setValues] = useState<{
-    province: string;
+    provinceCode: string;
     provinceName: string;
-    regency: string;
+    regencyCode: string;
     regencyName: string;
-    district: string;
+    districtCode: string;
     districtName: string;
-    village: string;
+    villageCode: string;
     villageName: string;
-    rw: string;
+    number: string;
   }>({
-    province: "",
+    provinceCode: "",
     provinceName: "",
-    regency: "",
+    regencyCode: "",
     regencyName: "",
-    district: "",
+    districtCode: "",
     districtName: "",
-    village: "",
+    villageCode: "",
     villageName: "",
-    rw: "",
+    number: "",
   });
 
   const [lists, setLists] = useState<{
@@ -104,99 +104,99 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create RW</Button>
+        <Button>Create Rw</Button>
       </DialogTrigger>
       <DialogContent className="lg:min-w-xl">
         <DialogHeader>
-          <DialogTitle>Create a new RW</DialogTitle>
+          <DialogTitle>Create a new Rw</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
           <SelectField
             items={selectedProvinces}
-            name="province"
+            name="provinceCode"
             text="Select Province"
             onChange={(value: string, name: string) => {
               setValues((prev) => ({
                 ...prev,
-                province: value,
+                provinceCode: value,
                 provinceName: name,
-                regency: "",
+                regencyCode: "",
                 regencyName: "",
-                district: "",
+                districtCode: "",
                 districtName: "",
-                village: "",
+                villageCode: "",
                 villageName: "",
               }));
               setLists({ regencies: [], districts: [], villages: [] });
               fetcher.load(`?provinceCode=${value}`);
             }}
-            value={values.province}
+            value={values.provinceCode}
           />
 
           <SelectField
             items={lists.regencies}
-            name="regency"
+            name="regencyCode"
             text={isLoading ? "Loading..." : "Select Regency"}
             onChange={(value: string, name: string) => {
               setValues((prev) => ({
                 ...prev,
-                regency: value,
+                regencyCode: value,
                 regencyName: name,
-                district: "",
+                districtCode: "",
                 districtName: "",
-                village: "",
+                villageCode: "",
                 villageName: "",
               }));
               setLists((prev) => ({ ...prev, districts: [], villages: [] }));
               fetcher.load(`?regencyCode=${value}`);
             }}
-            value={values.regency}
+            value={values.regencyCode}
             isDisabled={isLoading || lists.regencies.length === 0}
           />
 
           <SelectField
             items={lists.districts}
-            name="district"
+            name="districtCode"
             text={isLoading ? "Loading..." : "Select District"}
             onChange={(value: string, name: string) => {
               setValues((prev) => ({
                 ...prev,
-                district: value,
+                districtCode: value,
                 districtName: name,
-                village: "",
+                villageCode: "",
                 villageName: "",
               }));
               setLists((prev) => ({ ...prev, villages: [] }));
               fetcher.load(`?districtCode=${value}`);
             }}
-            value={values.district}
+            value={values.districtCode}
             isDisabled={isLoading || lists.districts.length === 0}
           />
 
           <SelectField
             items={lists.villages}
-            name="village"
+            name="villageCode"
             text={isLoading ? "Loading..." : "Select Village"}
             onChange={(value: string, name: string) => {
               setValues((prev) => ({
                 ...prev,
-                village: value,
+                villageCode: value,
                 villageName: name,
               }));
             }}
-            value={values.village}
+            value={values.villageCode}
             isDisabled={isLoading || lists.villages.length === 0}
           />
 
           <InputField
-            name="rw"
-            placeholder="Rw Number"
-            value={values.rw}
+            name="number"
+            placeholder="number Number"
+            value={values.number}
             onChange={(e) => {
               setValues((prev) => ({
                 ...prev,
-                rw: e.target.value,
+                number: e.target.value,
               }));
             }}
           />
@@ -204,9 +204,12 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
           <LoadingButton
             text="Submit"
             onClick={() => {
-              actionFetcher.submit(values, {
-                method: "post",
-              });
+              actionFetcher.submit(
+                { ...values, _action: "create" },
+                {
+                  method: "post",
+                },
+              );
             }}
           />
         </div>
