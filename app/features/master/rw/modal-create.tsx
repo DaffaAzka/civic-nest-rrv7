@@ -13,6 +13,7 @@ import type { SelectItem } from "@/types/other.types";
 import { useEffect, useState } from "react";
 import InputField from "@/components/custom/input-field";
 import LoadingButton from "@/components/custom/loading-button";
+import type { action } from "@/routes/_auth/master/rw";
 
 export default function ModalCreate({ provinces }: { provinces: Province[] }) {
   const fetcher = useFetcher<{
@@ -21,18 +22,32 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
     districts: Regency[] | null;
     villages: Village[] | null;
   }>();
+
+  const actionFetcher = useFetcher<typeof action>();
+
+  const isSubmitting = actionFetcher.state === "submitting";
   const isLoading = fetcher.state === "loading";
 
   const [values, setValues] = useState<{
     province: string;
+    provinceName: string;
     regency: string;
+    regencyName: string;
     district: string;
+    districtName: string;
     village: string;
+    villageName: string;
+    rw: string;
   }>({
     province: "",
+    provinceName: "",
     regency: "",
+    regencyName: "",
     district: "",
+    districtName: "",
     village: "",
+    villageName: "",
+    rw: "",
   });
 
   const [lists, setLists] = useState<{
@@ -101,13 +116,18 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
             items={selectedProvinces}
             name="province"
             text="Select Province"
-            onChange={(value: string) => {
-              setValues({
+            onChange={(value: string, name: string) => {
+              setValues((prev) => ({
+                ...prev,
                 province: value,
+                provinceName: name,
                 regency: "",
+                regencyName: "",
                 district: "",
+                districtName: "",
                 village: "",
-              });
+                villageName: "",
+              }));
               setLists({ regencies: [], districts: [], villages: [] });
               fetcher.load(`?provinceCode=${value}`);
             }}
@@ -122,8 +142,11 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
               setValues((prev) => ({
                 ...prev,
                 regency: value,
+                regencyName: name,
                 district: "",
+                districtName: "",
                 village: "",
+                villageName: "",
               }));
               setLists((prev) => ({ ...prev, districts: [], villages: [] }));
               fetcher.load(`?regencyCode=${value}`);
@@ -136,8 +159,14 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
             items={lists.districts}
             name="district"
             text={isLoading ? "Loading..." : "Select District"}
-            onChange={(value: string) => {
-              setValues((prev) => ({ ...prev, district: value, village: "" }));
+            onChange={(value: string, name: string) => {
+              setValues((prev) => ({
+                ...prev,
+                district: value,
+                districtName: name,
+                village: "",
+                villageName: "",
+              }));
               setLists((prev) => ({ ...prev, villages: [] }));
               fetcher.load(`?districtCode=${value}`);
             }}
@@ -149,16 +178,37 @@ export default function ModalCreate({ provinces }: { provinces: Province[] }) {
             items={lists.villages}
             name="village"
             text={isLoading ? "Loading..." : "Select Village"}
-            onChange={(value: string) => {
-              setValues((prev) => ({ ...prev, village: value }));
+            onChange={(value: string, name: string) => {
+              setValues((prev) => ({
+                ...prev,
+                village: value,
+                villageName: name,
+              }));
             }}
             value={values.village}
             isDisabled={isLoading || lists.villages.length === 0}
           />
 
-          <InputField name="rw" placeholder="Rw Number" />
+          <InputField
+            name="rw"
+            placeholder="Rw Number"
+            value={values.rw}
+            onChange={(e) => {
+              setValues((prev) => ({
+                ...prev,
+                rw: e.target.value,
+              }));
+            }}
+          />
 
-          <LoadingButton text="Submit" />
+          <LoadingButton
+            text="Submit"
+            onClick={() => {
+              actionFetcher.submit(values, {
+                method: "post",
+              });
+            }}
+          />
         </div>
       </DialogContent>
     </Dialog>
