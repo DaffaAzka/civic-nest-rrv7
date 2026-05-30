@@ -8,6 +8,7 @@ import {
   IconFileDescription,
   IconFileWord,
   IconFolder,
+  IconFolders,
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
@@ -58,9 +59,9 @@ const data = {
       icon: IconSettings,
     },
     {
-      title: "Search",
-      url: "/search",
-      icon: IconSearch,
+      title: "Master",
+      url: "/master",
+      icon: IconFolders,
     },
   ],
 };
