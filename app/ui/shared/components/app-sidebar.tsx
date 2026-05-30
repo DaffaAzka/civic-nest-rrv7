@@ -18,9 +18,9 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 
-import { NavMain } from "@/components/custom/nav-main";
-import { NavSecondary } from "@/components/custom/nav-secondary";
-import { NavUser } from "@/components/custom/nav-user";
+import { NavMain } from "@/ui/shared/components/nav-main";
+import { NavSecondary } from "@/ui/shared/components/nav-secondary";
+import { NavUser } from "@/ui/shared/components/nav-user";
 import {
   Sidebar,
   SidebarContent,

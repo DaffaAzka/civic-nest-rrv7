@@ -1,9 +1,9 @@
-import { SignInSchema } from "@/validators/auth.validators";
+import { SignInSchema } from "@/validators/auth.validator";
 import type { Route } from "./+types/sign-in";
 import { data, redirect } from "react-router";
 import { AppError } from "@/lib/error.server";
 import { signIn } from "@/services/auth.service.server";
-import SignInForm from "@/features/sign-in/form";
+import SignInForm from "@/ui/modules/auth/login-form";
 
 export function meta({}: Route.MetaArgs) {
   return [

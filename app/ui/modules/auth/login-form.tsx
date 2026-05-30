@@ -1,6 +1,6 @@
-import ErrorAlert from "@/components/custom/error-alert";
-import InputField from "@/components/custom/input-field";
-import LoadingButton from "@/components/custom/loading-button";
+import ErrorAlert from "@/ui/shared/components/error-alert";
+import InputField from "@/ui/shared/components/input-field";
+import LoadingButton from "@/ui/shared/components/loading-button";
 import {
   Card,
   CardContent,

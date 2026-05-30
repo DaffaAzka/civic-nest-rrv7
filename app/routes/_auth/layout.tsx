@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/custom/app-sidebar";
-import { SiteHeader } from "@/components/custom/site-header";
+import { AppSidebar } from "@/ui/shared/components/app-sidebar";
+import { SiteHeader } from "@/ui/shared/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { requireAuth } from "@/middlewares/auth.server";
 import { Outlet } from "react-router";

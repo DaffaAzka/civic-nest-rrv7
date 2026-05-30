@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db.server";
 import { AppError } from "@/lib/error.server";
-import type { Rw } from "@/types/index.types";
+import type { Rw } from "@/types/rw.types";
 
 export async function create(data: Rw, request: Request) {
   try {

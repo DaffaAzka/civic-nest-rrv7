@@ -1,8 +1,8 @@
-import RegisterForm from "@/features/register/form";
+import RegisterForm from "@/ui/modules/auth/register-form";
 import type { Route } from "./+types/register";
 import { register } from "@/services/auth.service.server";
 import { data, redirect } from "react-router";
-import { RegisterSchema } from "@/validators/auth.validators";
+import { RegisterSchema } from "@/validators/auth.validator";
 import { AppError } from "@/lib/error.server";
 
 export function meta({}: Route.MetaArgs) {

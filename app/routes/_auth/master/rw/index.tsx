@@ -4,8 +4,8 @@ import {
   useLoaderData,
   useRouteError,
 } from "react-router";
-import ModalCreate from "@/features/master/rw/modal-create";
-import type { Rw } from "@/types/index.types";
+import ModalCreate from "@/ui/modules/master/rw/modal-create";
+import type { Rw } from "@/types/rw.types";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { getProvinces, getRegencies, getDistricts, getVillages } =
@@ -38,7 +38,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export async function action({ request }: Route.ActionArgs) {
   const { create } = await import("@/services/rw.service.server");
-  const { RwCreateSchema } = await import("@/validators/master.validations");
+  const { RwCreateSchema } = await import("@/validators/rw.validator");
 
   const form = await request.formData();
 

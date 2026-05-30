@@ -1,5 +1,5 @@
 import { useFetcher } from "react-router";
-import SelectField from "@/components/custom/select-field";
+import SelectField from "@/ui/shared/components/select-field";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,10 +9,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { Province, Regency, Village } from "@/types/map.types";
-import type { SelectItem } from "@/types/index.types";
+import type { SelectItem } from "@/types/shared.types";
 import { useEffect, useState } from "react";
-import InputField from "@/components/custom/input-field";
-import LoadingButton from "@/components/custom/loading-button";
+import InputField from "@/ui/shared/components/input-field";
+import LoadingButton from "@/ui/shared/components/loading-button";
 import type { action } from "@/routes/_auth/master/rw";
 
 export default function ModalCreate({ provinces }: { provinces: Province[] }) {
