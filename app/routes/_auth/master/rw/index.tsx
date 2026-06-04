@@ -6,10 +6,15 @@ import {
 } from "react-router";
 import ModalCreate from "@/ui/modules/master/rw/modal-create";
 import type { Rw } from "@/types/rw.types";
+import TableRw from "@/ui/modules/master/rw/table";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { getProvinces, getRegencies, getDistricts, getVillages } =
     await import("@/services/area.service.server");
+
+  const { getRws } = await import("@/services/rw.service.server");
+
+  const rws = await getRws();
 
   const url = new URL(request.url);
   const provinceCode = url.searchParams.get("provinceCode");
@@ -18,22 +23,22 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   if (provinceCode) {
     const regencies = await getRegencies(provinceCode);
-    return { regencies, provinces: null, villages: null, districts: null };
+    return { regencies, provinces: null, villages: null, districts: null, rws };
   }
 
   if (regencyCode) {
     const districts = await getDistricts(regencyCode);
-    return { districts, regencies: null, villages: null, provinces: null };
+    return { districts, regencies: null, villages: null, provinces: null, rws };
   }
 
   if (districtCode) {
     const villages = await getVillages(districtCode);
-    return { villages, districts: null, regencies: null, provinces: null };
+    return { villages, districts: null, regencies: null, provinces: null, rws };
   }
 
   const provinces = await getProvinces();
 
-  return { provinces, districts: null, regencies: null, villages: null };
+  return { provinces, districts: null, regencies: null, villages: null, rws };
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -78,7 +83,12 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function RwPage() {
-  const { provinces } = useLoaderData<typeof loader>();
+  const { provinces, rws } = useLoaderData<typeof loader>();
 
-  return <ModalCreate provinces={provinces ?? []} />;
+  return (
+    <div className="flex flex-col gap-4">
+      <ModalCreate provinces={provinces ?? []} />
+      <TableRw rws={rws} />
+    </div>
+  );
 }
